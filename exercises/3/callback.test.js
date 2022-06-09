@@ -40,7 +40,7 @@ test('3.4 write a promise that resolves with any "string" after 500 ms, use prom
   // -----------------------
 
   promise.then((res) => {
-    expect(res).toEqual('Hello Promise');
+    expect(typeof res).toEqual('string');
     done();
   });
 });
@@ -54,7 +54,7 @@ test('3.5 write a promise that resolves with any "string" after 500 ms, but this
 
   const res = await promise;
 
-  expect(res).toEqual('Hello Promise');
+  expect(typeof res).toEqual('string');
 });
 
 test('3.6 refactor or copy parts of 3.3, but now create a function that takes one argument (filepath) and returns a promise with the correct result', async () => {

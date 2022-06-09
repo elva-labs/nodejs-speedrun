@@ -1,6 +1,6 @@
 test('2.1 Write a function (named concat) that can take any number of strings and join them to one single string', () => {
-  // Write your code here...
-  const concat = (...args) => args.join('');
+  // Write your code here
+  // ...
   // -----------------------
 
   expect(
