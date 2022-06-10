@@ -171,7 +171,7 @@ mutableVar = 1337 + 2;
 
 ---
 
-# Variables and Types
+# Variables & Types
 
 - Assignment is not restricted by typing
 - Nor previous assignments
@@ -897,7 +897,7 @@ for await (const chunk of stream) {
 
 ---
 
-# HTTP - communication on the internet
+# HTTP(S) - communication on the internet
 
 > but first some prerequisites
 
@@ -998,6 +998,35 @@ app.listen(port, () => {
 ```
 
 [Read more](https://expressjs.com/en/guide/routing.html)
+
+---
+
+# HTTP Server using Express
+
+- Middleware
+
+```js
+// application level
+app.use('/user/:id', (req, res, next) => {
+  console.log('Request Type:', req.method);
+  next();
+});
+```
+
+```js
+// router level
+router.use((req, res, next) => {
+  console.log('Time:', Date.now());
+  next();
+});
+
+router.get('/user/:id', (req, res, next) => {
+  console.log(req.params.id);
+  res.render('special');
+});
+
+app.use('/a/simple/path', router);
+```
 
 ---
 
