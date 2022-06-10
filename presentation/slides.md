@@ -903,9 +903,9 @@ for await (const chunk of stream) {
 
 <br/>
 
-1. TCP / UDP
-2. IP
-3. HTTP(S)
+1. TCP (transmission control protocol) / UDP (User datagram Protocol)
+2. IP (Internet Protocol)
+3. HTTP(S) - Hypertext transfer protocol
 
 <br/>
 
