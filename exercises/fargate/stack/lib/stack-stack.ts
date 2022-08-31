@@ -1,6 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
-import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as ecra from 'aws-cdk-lib/aws-ecr-assets';
 import * as ecs_patterns from 'aws-cdk-lib/aws-ecs-patterns';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
@@ -8,9 +9,14 @@ import { Construct } from 'constructs';
 export class FargateStack extends cdk.Stack {
 	constructor(scope: Construct, id: string, props?: cdk.StackProps) {
 		super(scope, id, props);
+		// Build and push image
+		const image = new ecra.DockerImageAsset(this, 'FargateDemoServiceImage', {
+			directory: '..',
+		});
 
-		// Ideally create the cluster in another stack and import it
-		// or make use of `ecs.Cluster.fromClusterArn` on an already existing cluster.
+		// Setup cluster & related vpc
+		// In a larger project we'd create this cluster in a separate stack and import
+		// the attributes that we need to deploy our service
 		const vpc = new ec2.Vpc(this, 'FargateVPC');
 		const cluster = new ecs.Cluster(this, 'FargateCluster', {
 			vpc,
@@ -23,12 +29,9 @@ export class FargateStack extends cdk.Stack {
 			'MyFargateService',
 			{
 				cluster,
-				desiredCount: 3,
+				desiredCount: 2,
 				taskImageOptions: {
-					image: ecs.ContainerImage.fromRegistry(
-						// replace with your ECR repo.
-						'995932554241.dkr.ecr.eu-north-1.amazonaws.com/fargate-demo:3'
-					),
+					image: ecs.ContainerImage.fromRegistry(image.imageUri),
 					containerPort: 3000,
 					environment: {
 						NODE_HELLO: 'Hello',

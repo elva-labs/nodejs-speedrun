@@ -5,7 +5,7 @@ import { FargateStack } from '../lib/stack-stack';
 
 const app = new cdk.App();
 
-new FargateStack(app, 'FargateStack', {
+new FargateStack(app, 'FargateService', {
 	env: {
 		region: 'eu-north-1',
 	},
