@@ -1102,3 +1102,156 @@ In npm, we have three distinctions between dependencies:
 
 - External packages
 - Express server
+
+---
+
+# Docker & VMs
+
+![docker-infra.png](https://cdn.hashnode.com/res/hashnode/image/upload/v1661759935669/SLknWFnU5.png)
+
+---
+
+# Docker
+
+- Process Isolation with `namespaces`
+- Less duplication with `layers`
+- Predictable shipping
+
+---
+
+# Docker
+
+```bash
+docker run hello-world
+```
+
+---
+
+# Docker (Dockerfile)
+
+- Outlines hos an application should be packaged
+- And can give us information on hos it's meant to be executed
+
+<br>
+
+```docker
+FROM node:slim
+
+WORKDIR /usr/app
+
+COPY package.json.js .
+COPY src/index.js .
+
+RUN npm i --quiet
+
+EXPOSE 3000
+
+CMD ["src/index.js"]
+
+ENTRYPOINT ["node"]
+```
+
+---
+
+# Docker Build
+
+```
+docker build -t <tag> .
+docker build -t my-node-app:v1 .
+```
+
+<br>
+
+```bash
+docker build -t <tag> --build-arg <varname>=<value> .
+docker build -t <tag> --build-arg TARGET='x86_64-unknown-linux-musl' .
+```
+
+---
+
+# Docker Run
+
+```bash
+# This command will "take control" of your terminals stdout.
+docker run <image:tag>
+
+# Prevents docker from "locking" the container stdout with the terminal.
+docker run -d <image:tag>
+
+# Detatch and route traffic from `host_post` to `container_port`.
+docker run -p <host_port>:<container_port> -d <image:tag>
+
+# Detach and direct all traffic from host 80 to cotinaer 8080
+docker run -p 80:8080 -d <image:tag>
+
+# File mounts
+docker run -v host_dir:location_dir -d <image:tag>
+
+docker run -v /tmp/container-x/runtime-data:/opt/runtime-data -d <image:tag>
+
+# Envs
+docker run -e <VARIABLE_NAME>='env-value' -d <image:tag>
+
+docker run --env-file ./env.list <image:tag>
+```
+
+---
+
+# Docker "Debugging"
+
+- `docker ps`
+- `docker inspect <container-id>`
+- `docker top <container-id>`
+- `docker stats`
+- `docker run -it --entrypoint=bash <image:tag>`
+
+---
+
+# Docker Deployment (Fargate & CDK)
+
+> Fargate is a tool that enables us to deploy our containers on Amazon ECS without having to manage servers or clusters. In short, we tell AWS (ECS) how we want our images to be executed, and everything else is handled automatically.
+
+<br>
+
+```
+git clone git@github.com:elva-labs/nodejs-crash-course.git
+cd nodejs-crash-course/exercises/fargate
+yarn install
+```
+
+---
+
+# Docker Deployment (Fargate & CDK)
+
+<br>
+
+```ts
+new ecs_patterns.ApplicationLoadBalancedFargateService(
+  this,
+  'MyFargateService',
+  {
+    cluster,
+    desiredCount: 2,
+    taskImageOptions: {
+      image: ecs.ContainerImage.fromRegistry(image.imageUri),
+      containerPort: 3000,
+      environment: {
+        NODE_HELLO: 'Hello',
+      },
+    },
+    publicLoadBalancer: true,
+  }
+);
+```
+
+---
+
+# Docker Deployment (Fargate & CDK)
+
+<br>
+
+- `yarn synth`
+- `yarn deploy`
+- `yarn destroy`
+
+---
