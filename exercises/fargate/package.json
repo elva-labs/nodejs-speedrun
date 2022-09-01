@@ -8,9 +8,12 @@
 		"express": "^4.18.1"
 	},
 	"scripts": {
-		"deploy": "cd stack && yarn cdk deploy && cd --",
-		"synth": "cd stack && yarn cdk synth && cd --",
-		"postinstall": "cd stack && yarn && cd --"
+		"start": "node src/index.js",
+		"deploy": "cd stack && yarn cdk deploy && cd -",
+		"stack:synth": "cd stack && yarn cdk synth && cd -",
+		"stack:install": "cd stack && yarn && cd -",
+		"stack:bootstrap": "cd stack && yarn cdk bootstrap && cd -",
+		"stack:destroy": "cd stack && yarn cdk destroy && cd -"
 	},
 	"license": "ISC"
 }

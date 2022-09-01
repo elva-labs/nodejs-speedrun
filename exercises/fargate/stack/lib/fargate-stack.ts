@@ -34,7 +34,7 @@ export class FargateStack extends cdk.Stack {
 					image: ecs.ContainerImage.fromRegistry(image.imageUri),
 					containerPort: 3000,
 					environment: {
-						NODE_HELLO: 'Hello',
+						NODE_HELLO: 'This is line is from the ENV',
 					},
 				},
 				publicLoadBalancer: true,
