@@ -1146,7 +1146,7 @@ RUN npm i --quiet
 
 EXPOSE 3000
 
-CMD ["src/index.js"]
+CMD ["index.js"]
 
 ENTRYPOINT ["node"]
 ```
@@ -1217,6 +1217,9 @@ docker run --env-file ./env.list <image:tag>
 git clone git@github.com:elva-labs/nodejs-crash-course.git
 cd nodejs-crash-course/exercises/fargate
 yarn install
+yarn stack:bootstrap
+yarn stack:install
+yarn deploy
 ```
 
 ---
